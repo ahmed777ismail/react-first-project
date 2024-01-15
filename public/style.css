@@ -12,21 +12,17 @@
  
 */
 
- 
 /* ===============
    1.  ul class .flex
 ================ */
 
-
- 
-
-
 .flex {
   display: flex;
+  align-items: center;
 }
 
 .main-list {
-  padding: 20px;
+  padding: 10px 22px;
   font-size: 19px;
   position: relative;
 }
@@ -35,7 +31,8 @@
   padding: 8px 15px;
 }
 
-.main-link:hover,  .main-link.active{
+.main-link:hover,
+.main-link.active {
   color: cyan;
   box-shadow: 0 0 5px cyan;
   border-radius: 5px;
@@ -49,7 +46,7 @@
   display: none;
 
   position: absolute;
-  top: 69px;
+  top: 40px;
   left: -15px;
   border-top: 1px solid cyan;
 
@@ -105,16 +102,6 @@
   display: block;
 }
 
-
 /* ==================
     2. main & footer
 ===================== */
-
-
-
-
-
-
-
-
- 

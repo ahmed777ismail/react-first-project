@@ -71,37 +71,41 @@ const Header = () => {
               }}
               className="main-list"
             >
-              <NavLink className="main-link">Sign-out</NavLink>
+              <button className="main-link signout">Sign-out</button>
             </li>
           )}
 
-          <li className="main-list">
-            <NavLink className="main-link" to="/html">
-              HTML
-            </NavLink>
-            <ul className="sub-ul">
-              <li>
-                <a href="">Full Course</a>
-              </li>
-              <li>
-                <a href="">Crash Course</a>
-              </li>
-              <li>
-                <a href="">learn in 1h</a>
-              </li>
-            </ul>
-          </li>
+          {user && (
+            <li className="main-list">
+              <NavLink className="main-link" to="/html">
+                HTML
+              </NavLink>
+              <ul className="sub-ul">
+                <li>
+                  <a href="">Full Course</a>
+                </li>
+                <li>
+                  <a href="">Crash Course</a>
+                </li>
+                <li>
+                  <a href="">learn in 1h</a>
+                </li>
+              </ul>
+            </li>
+          )}
 
-          <li className="main-list">
-            <NavLink className="main-link" to="/javascript">
-              JavaScript
-            </NavLink>
-            <ul className="sub-ul sub-of-js">
-              <li>
-                <a href="">coming soon🔥</a>
-              </li>
-            </ul>
-          </li>
+          {user && (
+            <li className="main-list">
+              <NavLink className="main-link" to="/javascript">
+                JavaScript
+              </NavLink>
+              <ul className="sub-ul sub-of-js">
+                <li>
+                  <a href="">coming soon🔥</a>
+                </li>
+              </ul>
+            </li>
+          )}
         </ul>
       </header>
 

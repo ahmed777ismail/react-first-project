@@ -1,14 +1,16 @@
-
-.myheader .ali{
+.myheader .ali {
   background-color: teal;
 }
-
-
 
 .hide-when-mobile {
   display: flex;
   justify-content: space-around;
-  align-items: center
+  align-items: center;
+}
+
+.signout {
+  all: unset;
+  padding: 8px 15px;
 }
 
 /* ==================
@@ -18,12 +20,11 @@
   display: none;
 }
 
-
 @media (max-width: 800px) {
   .show-when-mobile {
     /* display: block; */
   }
-  
+
   .hide-when-mobile {
     /* display: none; */
   }
