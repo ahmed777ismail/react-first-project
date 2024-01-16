@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/home";
-import HTML from "./pages/html";
-import Javascript from "./pages/javascript";
+import Home from "./pages/Home";
+import About from "./pages/About";
+
+import Profile from "./pages/Profile";
 // LEVEL2
 import { useContext } from "react";
 import ThemeContext from "./context/ThemeContext";
@@ -14,23 +15,24 @@ const router = createBrowserRouter([
     element: <Home />,
     errorElement: <h1>SORROY.........</h1>,
   },
-
-  {
-    path: "/html",
-    element: <HTML />,
-  },
   {
     path: "/signin",
     element: <Signin />,
   },
+
   {
     path: "/signup",
     element: <Signup />,
   },
 
   {
-    path: "/javascript",
-    element: <Javascript />,
+    path: "/about",
+    element: <About />,
+  },
+
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 

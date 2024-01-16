@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const [user, loading, error] = useAuthState(auth);
+  console.log(user);
   return (
     <>
       <Helmet>
@@ -17,7 +18,11 @@ const Home = () => {
 
       <Header />
 
-      {user && <MainContent pageName="HOME Page" />}
+      {user && (
+        <main>
+          Welcome: {user.displayName} <span>🧡</span>
+        </main>
+      )}
 
       {!user && (
         <main>
@@ -26,7 +31,7 @@ const Home = () => {
             <Link style={{ fontSize: "30px" }} to="/signin">
               sign in
             </Link>{" "}
-            to continue... 🧡
+            to continue... <span>🧡</span>
           </p>
         </main>
       )}

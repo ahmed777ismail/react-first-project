@@ -20,11 +20,11 @@ const Html = () => {
   return (
     <>
       <Helmet>
-        <title>HTML Page</title>
-        <meta name="description" content="HTMLLLLLLLLLLLLLLLL" />
+        <title>About Page</title>
+        <meta name="description" content="About" />
       </Helmet>
       <Header />
-      <MainContent pageName="HTML Page" />
+      <MainContent pageName="About Page" />
       <Footer />
     </>
   );

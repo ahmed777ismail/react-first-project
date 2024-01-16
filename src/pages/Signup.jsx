@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 
 import { auth } from "../firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -14,6 +14,7 @@ const Signup = () => {
   const [password, setpassword] = useState("");
   const [hasError, sethasError] = useState(false);
   const [firebaseError, setfirebaseError] = useState("");
+  const [userName, setuserName] = useState("");
   return (
     <>
       <Helmet>
@@ -26,6 +27,16 @@ const Signup = () => {
           <p style={{ fontSize: "23px", marginBottom: "22px" }}>
             Create a new account <span>🧡</span>{" "}
           </p>
+
+          <input
+            onChange={(eo) => {
+              setuserName(eo.target.value);
+            }}
+            required
+            placeholder=" userName : "
+            type="text"
+          />
+
           <input
             onChange={(eo) => {
               setemail(eo.target.value);
@@ -34,6 +45,7 @@ const Signup = () => {
             placeholder=" E-mail : "
             type="email"
           />
+
           <input
             onChange={(eo) => {
               setpassword(eo.target.value);
@@ -50,7 +62,18 @@ const Signup = () => {
                 .then((userCredential) => {
                   // Signed in
                   const user = userCredential.user;
-                  navigate("/");
+
+                  updateProfile(auth.currentUser, {
+                    displayName: userName,
+                  })
+                    .then(() => {
+                      navigate("/");
+                    })
+                    .catch((error) => {
+                      // An error occurred
+                      // ...
+                    });
+
                   // ...
                 })
                 .catch((error) => {
