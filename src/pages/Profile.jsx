@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/config";
 import Moment from "react-moment";
+import { deleteUser } from "firebase/auth";
 
 const Profile = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -15,6 +16,11 @@ const Profile = () => {
   useEffect(() => {
     if (!user && !loading) {
       navigate("/");
+    }
+    if (user) {
+      if (!user.emailVerified) {
+        navigate("/");
+      }
     }
   });
 
@@ -54,15 +60,7 @@ const Profile = () => {
     margin: auto;
         }
 
-        .delete{
-          margin-top: 25px;
-        background-color:  #dc3545;
-        padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0.25rem;
-    border-color: #dc3545;
-        }
+
         
         `}</style>
         </Helmet>
@@ -81,7 +79,21 @@ const Profile = () => {
             Account Created :{" "}
             <Moment fromNow date={user.metadata.creationTime} />
           </h6>
-          <button className="delete">Delete account</button>
+          <button
+            onClick={() => {
+              deleteUser(user)
+                .then(() => {
+                  // User deleted.
+                })
+                .catch((error) => {
+                  // An error ocurred
+                  // ...
+                });
+            }}
+            className="delete"
+          >
+            Delete account
+          </button>
         </main>
         <Footer />
       </>

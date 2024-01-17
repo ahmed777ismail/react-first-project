@@ -7,27 +7,47 @@ import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/config";
 
-const Html = () => {
+const About = () => {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !loading) {
       navigate("/");
     }
-  }, [user]);
 
-  return (
-    <>
-      <Helmet>
-        <title>About Page</title>
-        <meta name="description" content="About" />
-      </Helmet>
-      <Header />
-      <MainContent pageName="About Page" />
-      <Footer />
-    </>
-  );
+    if (user) {
+      if (!user.emailVerified) {
+        navigate("/");
+      }
+    }
+  });
+
+  if (loading) {
+    return (
+      <div>
+        <Header />
+
+        <main>Loading........</main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (user) {
+    if (user.emailVerified) {
+      return (
+        <>
+          <Helmet>
+            <title>About Page</title>
+          </Helmet>
+          <Header />
+          <MainContent pageName="About Page" />
+          <Footer />
+        </>
+      );
+    }
+  }
 };
 
-export default Html;
+export default About;
