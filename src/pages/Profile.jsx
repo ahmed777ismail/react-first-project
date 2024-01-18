@@ -17,12 +17,25 @@ const Profile = () => {
     if (!user && !loading) {
       navigate("/");
     }
+
     if (user) {
       if (!user.emailVerified) {
         navigate("/");
       }
     }
   });
+
+  const DeleteBTN = () => {
+    deleteUser(user)
+      .then(() => {
+        //
+        console.log("User deleted.");
+      })
+      .catch((error) => {
+        // An error ocurred
+        console.log(error.message);
+      });
+  };
 
   if (loading) {
     return <Loading />;
@@ -72,14 +85,7 @@ const Profile = () => {
           </h6>
           <button
             onClick={() => {
-              deleteUser(user)
-                .then(() => {
-                  // User deleted.
-                })
-                .catch((error) => {
-                  // An error ocurred
-                  // ...
-                });
+              DeleteBTN();
             }}
             className="delete"
           >

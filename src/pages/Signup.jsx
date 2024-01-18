@@ -24,6 +24,11 @@ const Signup = () => {
   const [userName, setuserName] = useState("");
   const [user, loading, error] = useAuthState(auth);
 
+  // Loading    (done)
+  // NOT sign-in  (done)
+  // sign-in without Email verification   (done)
+  // (sign-in && verified email) => navigate(/)    (done)
+
   useEffect(() => {
     if (user) {
       if (user.emailVerified) {
@@ -31,6 +36,60 @@ const Signup = () => {
       }
     }
   });
+  //
+  const signUpBTN = (eo) => {
+    eo.preventDefault();
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        sendEmailVerification(auth.currentUser).then(() => {
+          //
+          console.log("Email verification sent!");
+        });
+
+        updateProfile(auth.currentUser, {
+          displayName: userName,
+        })
+          .then(() => {
+            navigate("/");
+          })
+          .catch((error) => {
+            console.log(error.code);
+            // ...
+          });
+
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        sethasError(true);
+
+        switch (errorCode) {
+          case "auth/invalid-email":
+            setfirebaseError("Wrong Email");
+            break;
+
+          case "auth/user-not-found":
+            setfirebaseError("Wrong Email");
+            break;
+
+          case "auth/wrong-password":
+            setfirebaseError("Wrong Password");
+            break;
+
+          case "auth/too-many-requests":
+            setfirebaseError("Too many requests, please try aganin later");
+            break;
+
+          default:
+            setfirebaseError("Please check your email & password");
+            break;
+        }
+      });
+  };
 
   if (loading) {
     return <Loading />;
@@ -51,6 +110,7 @@ const Signup = () => {
       );
     }
   }
+
   if (!user) {
     return (
       <>
@@ -70,7 +130,7 @@ const Signup = () => {
                 setuserName(eo.target.value);
               }}
               required
-              placeholder=" userName : "
+              placeholder=" UserName : "
               type="text"
             />
 
@@ -91,60 +151,10 @@ const Signup = () => {
               placeholder=" Password : "
               type="password"
             />
+
             <button
               onClick={(eo) => {
-                eo.preventDefault();
-
-                createUserWithEmailAndPassword(auth, email, password)
-                  .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    sendEmailVerification(auth.currentUser).then(() => {
-                      // Email verification sent!
-                      // ...
-                    });
-
-                    updateProfile(auth.currentUser, {
-                      displayName: userName,
-                    })
-                      .then(() => {
-                        navigate("/");
-                      })
-                      .catch((error) => {
-                        // An error occurred
-                        // ...
-                      });
-
-                    // ...
-                  })
-                  .catch((error) => {
-                    const errorCode = error.code;
-                    sethasError(true);
-
-                    switch (errorCode) {
-                      case "auth/invalid-email":
-                        setfirebaseError("Wrong Email");
-                        break;
-
-                      case "auth/user-not-found":
-                        setfirebaseError("Wrong Email");
-                        break;
-
-                      case "auth/wrong-password":
-                        setfirebaseError("Wrong Password");
-                        break;
-
-                      case "auth/too-many-requests":
-                        setfirebaseError(
-                          "Too many requests, please try aganin later"
-                        );
-                        break;
-
-                      default:
-                        setfirebaseError("Please check your email & password");
-                        break;
-                    }
-                  });
+                signUpBTN(eo);
               }}
             >
               Sign up

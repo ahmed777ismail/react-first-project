@@ -12,6 +12,13 @@ const Home = () => {
   const [user, loading, error] = useAuthState(auth);
   console.log(user);
 
+  const sendAgain = () => {
+    sendEmailVerification(auth.currentUser).then(() => {
+      console.log("Email verification sent!");
+      // ...
+    });
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -32,7 +39,10 @@ const Home = () => {
             <Link style={{ fontSize: "30px" }} to="/signin">
               sign in
             </Link>{" "}
-            to continue... <span>🧡</span>
+            to continue...{" "}
+            <span>
+              <i className="fa-solid fa-heart"></i>
+            </span>
           </p>
         </main>
 
@@ -55,7 +65,10 @@ const Home = () => {
           <main>
             <p>
               {" "}
-              Welcome: {user.displayName} <span>🧡</span>
+              Welcome: {user.displayName}{" "}
+              <span>
+                <i className="fa-solid fa-heart"></i>
+              </span>
             </p>
           </main>
 
@@ -77,16 +90,16 @@ const Home = () => {
           <main>
             <p>
               {" "}
-              Welcome: {user.displayName} <span>🧡</span>
+              Welcome: {user.displayName}{" "}
+              <span>
+                <i className="fa-solid fa-heart"></i>{" "}
+              </span>
             </p>
 
             <p>Please verify your email to continue ✋ </p>
             <button
               onClick={() => {
-                sendEmailVerification(auth.currentUser).then(() => {
-                  console.log("Email verification sent!");
-                  // ...
-                });
+                sendAgain();
               }}
               className="delete"
             >
