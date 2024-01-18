@@ -1,6 +1,7 @@
 import Header from "../comp/header";
 import Footer from "../comp/Footer";
 import Loading from "../comp/Loading";
+import Erroe404 from "./erroe404";
 import MainContent from "../comp/MainContent";
 import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
@@ -24,6 +25,9 @@ const About = () => {
     }
   });
 
+  if (error) {
+    return <Erroe404 />;
+  }
   if (loading) {
     return <Loading />;
   }

@@ -1,6 +1,7 @@
 import Header from "../comp/header";
 import Footer from "../comp/Footer";
 import Loading from "../comp/Loading";
+import Erroe404 from "./erroe404";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
@@ -91,6 +92,9 @@ const Signup = () => {
       });
   };
 
+  if (error) {
+    return <Erroe404 />;
+  }
   if (loading) {
     return <Loading />;
   }
