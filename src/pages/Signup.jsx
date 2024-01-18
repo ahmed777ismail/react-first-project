@@ -1,5 +1,6 @@
 import Header from "../comp/header";
 import Footer from "../comp/Footer";
+import Loading from "../comp/Loading";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
@@ -32,13 +33,7 @@ const Signup = () => {
   });
 
   if (loading) {
-    return (
-      <div>
-        <Header />
-        <main></main>
-        <Footer />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (user) {

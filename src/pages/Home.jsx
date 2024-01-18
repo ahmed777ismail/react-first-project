@@ -1,24 +1,19 @@
 import Header from "../comp/header";
 import Footer from "../comp/Footer";
-import MainContent from "../comp/MainContent";
+import Loading from "../comp/Loading";
+
 import { Helmet } from "react-helmet-async";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/config";
 import { Link } from "react-router-dom";
 import { sendEmailVerification } from "firebase/auth";
+
 const Home = () => {
   const [user, loading, error] = useAuthState(auth);
   console.log(user);
 
   if (loading) {
-    return (
-      <div>
-        <Header />
-
-        <main>Loading........</main>
-        <Footer />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (!user) {
