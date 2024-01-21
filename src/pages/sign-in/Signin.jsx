@@ -1,15 +1,17 @@
-import Header from "../comp/header";
-import Footer from "../comp/Footer";
+import Header from "../../comp/header";
+import Footer from "../../comp/Footer";
+
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import { auth } from "../firebase/config";
+import { auth } from "../../firebase/config";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signin.css";
+import Modal from "shared/Modal";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -18,12 +20,7 @@ const Signin = () => {
   const [password, setpassword] = useState("");
   const [hasError, sethasError] = useState(false);
   const [firebaseError, setfirebaseError] = useState("");
-  const [showForm, setshowForm] = useState("");
   const [showSendEmail, setshowSendEmail] = useState(false);
-
-  const forgotPassword = () => {
-    setshowForm("show-forgot-password");
-  };
 
   const signInBTN = (eo) => {
     eo.preventDefault();
@@ -64,6 +61,16 @@ const Signin = () => {
       });
   };
 
+  // LEVEL3
+  const [showModal, setshowModal] = useState(true);
+  const forgotPassword = () => {
+    setshowModal(true);
+  };
+
+  const closeModal = () => {
+    setshowModal(false);
+  };
+
   return (
     <>
       <Helmet>
@@ -72,48 +79,7 @@ const Signin = () => {
       <Header />
 
       <main>
-        <form className={`forgot-password ${showForm}`}>
-          <div
-            onClick={() => {
-              setshowForm("");
-            }}
-            className="close"
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </div>
-
-          <input
-            onChange={(eo) => {
-              setresetPass(eo.target.value);
-            }}
-            required
-            placeholder=" E-mail : "
-            type="email"
-          />
-          <button
-            onClick={(eo) => {
-              eo.preventDefault();
-
-              sendPasswordResetEmail(auth, resetPass)
-                .then(() => {
-                  console.log("send email");
-                  setshowSendEmail(true);
-                })
-                .catch((error) => {
-                  const errorCode = error.code;
-                  console.log(errorCode);
-                  // ..
-                });
-            }}
-          >
-            Reset Password
-          </button>
-          {showSendEmail && (
-            <p className="check-email">
-              Please check your email to reset your password.
-            </p>
-          )}
-        </form>
+        {showModal && <Modal closeModal={closeModal} />}
 
         <form>
           <input
@@ -149,7 +115,7 @@ const Signin = () => {
             onClick={() => {
               forgotPassword();
             }}
-            className="forgot-pass"
+            className="forgot-pass mtt"
           >
             Forgot password ?
           </p>
