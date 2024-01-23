@@ -62,7 +62,7 @@ const Signin = () => {
   };
 
   // LEVEL3
-  const [showModal, setshowModal] = useState(true);
+  const [showModal, setshowModal] = useState(false);
   const forgotPassword = () => {
     setshowModal(true);
   };
@@ -79,7 +79,39 @@ const Signin = () => {
       <Header />
 
       <main>
-        {showModal && <Modal closeModal={closeModal} />}
+        {showModal && (
+          <Modal closeModal={closeModal}>
+            <input
+              onChange={(eo) => {
+                setresetPass(eo.target.value);
+              }}
+              required
+              placeholder=" E-mail : "
+              type="email"
+            />
+            <button
+              onClick={(eo) => {
+                eo.preventDefault();
+
+                sendPasswordResetEmail(auth, resetPass)
+                  .then(() => {
+                    console.log("send email");
+                    setshowSendEmail(true);
+                  })
+                  .catch((error) => {
+                    // ..
+                  });
+              }}
+            >
+              Reset Password
+            </button>
+            {showSendEmail && (
+              <p className="check-email">
+                Please check your email to reset your password.
+              </p>
+            )}
+          </Modal>
+        )}
 
         <form>
           <input

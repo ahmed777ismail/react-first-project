@@ -4,18 +4,17 @@ import Loading from "../../comp/Loading";
 import Erroe404 from "../erroe404";
 import { Helmet } from "react-helmet-async";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase/config";
+import { auth, db } from "../../firebase/config";
 import { Link } from "react-router-dom";
 import { sendEmailVerification } from "firebase/auth";
 // Level 3
 import "./Home.css";
-import Modal from "shared/Modal";
 import { useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
+import HomeModal from "./modal";
 
 const Home = () => {
   const [user, loading, error] = useAuthState(auth);
-  console.log(user);
-
   const sendAgain = () => {
     sendEmailVerification(auth.currentUser).then(() => {
       console.log("Email verification sent!");
@@ -23,14 +22,54 @@ const Home = () => {
     });
   };
 
-  // LEVEL3
+  // ===============================
+  //    FUNCTIONS of Modal
+  // ===============================
   const [showModal, setshowModal] = useState(false);
-  const forgotPassword = () => {
-    setshowModal(true);
-  };
+  const [showLoading, setshowLoading] = useState(false);
+  const [showMessage, setshowMessage] = useState(false);
+  const [taskTitle, settitle] = useState("");
+  const [array, setarray] = useState([]);
+  const [subTask, setsubTask] = useState("");
 
   const closeModal = () => {
     setshowModal(false);
+  };
+
+  const titleInput = (eo) => {
+    settitle(eo.target.value);
+  };
+
+  const detailsInput = (eo) => {
+    setsubTask(eo.target.value);
+  };
+
+  const addBTN = (eo) => {
+    eo.preventDefault();
+    array.push(subTask);
+    console.log(array);
+    setsubTask("");
+  };
+
+  const submitBTN = async (eo) => {
+    eo.preventDefault();
+    setshowLoading(true);
+    const taskId = new Date().getTime();
+    await setDoc(doc(db, user.uid, `${taskId}`), {
+      title: taskTitle,
+      detatils: array,
+      id: taskId,
+    });
+    setshowLoading(false);
+    settitle("");
+    setarray([]);
+
+    setshowModal(false);
+    setshowMessage(true);
+
+    setTimeout(() => {
+      setshowMessage(false);
+    }, 4000);
   };
 
   if (error) {
@@ -158,7 +197,29 @@ const Home = () => {
               </button>
             </section>
 
-            {showModal && <Modal closeModal={closeModal} />}
+            {showModal && (
+              <HomeModal
+                closeModal={closeModal}
+                titleInput={titleInput}
+                detailsInput={detailsInput}
+                addBTN={addBTN}
+                submitBTN={submitBTN}
+                taskTitle={taskTitle}
+                subTask={subTask}
+                array={array}
+                showLoading={showLoading}
+              />
+            )}
+
+            <p
+              style={{
+                right: showMessage ? "20px" : "-100vw",
+              }}
+              className="show-message"
+            >
+              Task added successfully{" "}
+              <i className="fa-regular fa-circle-check"></i>
+            </p>
           </main>
 
           <Footer />
