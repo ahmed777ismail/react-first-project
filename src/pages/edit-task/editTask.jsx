@@ -1,69 +1,56 @@
 import "./editTask.css";
+
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "comp/header";
 import Footer from "comp/Footer";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/config";
+import Loading from "comp/Loading";
+import TitleSection from "./1-TitleSection";
+import SubTasksSection from "./2-SubTasksSection";
+import Btnssection from "./3-Btnssection";
+import { useParams } from "react-router-dom";
 
 const EditTask = () => {
-  return (
-    <div>
-      <Helmet>
-        <title>edit task Page</title>
-      </Helmet>
+  const [user, loading, error] = useAuthState(auth);
 
-      <Header />
-      <div className="edit-task">
-        {/* Title */}
-        <section className="title center">
-          <h1>
-            <input
-              value={"ali hassan"}
-              className="title-input center"
-              type="text"
-            />
-            <i className="fa-regular fa-pen-to-square"></i>
-          </h1>
-        </section>
+  let { stringId } = useParams();
 
-        {/* Sub-tasks section */}
-        <section className="sub-task mtt">
-          <div className="parent-time">
-            <p className="time">Created: 6 days ago</p>
-            <div>
-              <input id="checkbox" type="checkbox" />
-              <label htmlFor="checkbox">Completed </label>
-            </div>
-          </div>
+  //
 
-          <ul>
-            <li className="card-task flex">
-              <p> Sub taskk </p>
-              <i className="fa-solid fa-trash"></i>
-            </li>
+  if (error) {
+    return <h1>Error : {error.message}</h1>;
+  }
 
-            <li className="card-task flex">
-              <p> Sub taskk </p>
-              <i className="fa-solid fa-trash"></i>
-            </li>
-          </ul>
-        </section>
+  if (loading) {
+    return <Loading />;
+  }
 
-        {/* Add-more BTN && Delete BTN */}
+  if (user) {
+    return (
+      <div>
+        <Helmet>
+          <title>edit task Page</title>
+        </Helmet>
 
-        <section className="center mtt">
-          <button className="add-more-btn">
-            Add more <i className="fa-solid fa-plus"></i>
-          </button>
+        <Header />
+        <div className="edit-task">
+          {/* Title */}
+          <TitleSection user={user} stringId={stringId} />
 
-          <div>
-            <button className="delete">Delete task</button>
-          </div>
-        </section>
+          {/* Sub-tasks section */}
+          <SubTasksSection user={user} stringId={stringId} />
+
+          {/* Add-more BTN && Delete BTN */}
+
+          <Btnssection user={user} stringId={stringId} />
+        </div>
+
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
-  );
+    );
+  }
 };
 
 export default EditTask;

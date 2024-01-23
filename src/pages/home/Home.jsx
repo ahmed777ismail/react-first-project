@@ -12,6 +12,7 @@ import "./Home.css";
 import { useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import HomeModal from "./modal";
+import AllTasksSection from "./AllTasksSection";
 
 const Home = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -34,6 +35,8 @@ const Home = () => {
 
   const closeModal = () => {
     setshowModal(false);
+    settitle("");
+    setarray([]);
   };
 
   const titleInput = (eo) => {
@@ -46,7 +49,11 @@ const Home = () => {
 
   const addBTN = (eo) => {
     eo.preventDefault();
-    array.push(subTask);
+
+    if (!array.includes(subTask)) {
+      array.push(subTask);
+    }
+
     console.log(array);
     setsubTask("");
   };
@@ -57,8 +64,9 @@ const Home = () => {
     const taskId = new Date().getTime();
     await setDoc(doc(db, user.uid, `${taskId}`), {
       title: taskTitle,
-      detatils: array,
+      details: array,
       id: taskId,
+      completed: false,
     });
     setshowLoading(false);
     settitle("");
@@ -73,7 +81,7 @@ const Home = () => {
   };
 
   if (error) {
-    return <Erroe404 />;
+    return <h1>Error : {error.message}</h1>;
   }
 
   if (loading) {
@@ -171,19 +179,7 @@ const Home = () => {
             </section>
 
             {/* SHOW all tasks */}
-            <section className="flex all-tasks mt">
-              <article dir="auto" className="one-task">
-                <Link to={"/edit-task"}>
-                  <h2> New Task </h2>
-                  <ul>
-                    <li>Sub task 1 </li>
-                    <li> Sub task 2</li>
-                  </ul>
-
-                  <p className="time">a day ago</p>
-                </Link>
-              </article>
-            </section>
+            <AllTasksSection user={user} />
 
             {/* Add new task BTN */}
             <section className="mt">
