@@ -713,7 +713,7 @@ const Erroe404 = () => {
       <div className="sky-bg" />
       <div className="wave-7" />
       <div className="wave-6" />
-      <a className="wave-island" href="https://e-commerce-405713.web.app/">
+      <a className="wave-island" href="https://c4a.dev/">
         <img
           src="http://res.cloudinary.com/andrewhani/image/upload/v1524501929/404/island.svg"
           alt="Island"

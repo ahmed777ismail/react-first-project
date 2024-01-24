@@ -3,12 +3,15 @@ const ThemeContexttt = createContext();
 
 const initialData = {
   theme:
-    localStorage.getItem("myTheme") === null
+    localStorage.getItem("mtTheme") === null
       ? "Light"
-      : localStorage.getItem("myTheme") === "Light"
+      : localStorage.getItem("mtTheme") === "Light"
       ? "Light"
       : "Dark",
 };
+
+//,
+
 const reducer = (firstState, action) => {
   switch (action.type) {
     case "CHANGE_THEME":
@@ -21,7 +24,7 @@ const reducer = (firstState, action) => {
 export function ThemeProvider({ children }) {
   const [firstState, dispatch] = useReducer(reducer, initialData);
   const toggleTheme = (newName) => {
-    localStorage.setItem("myTheme", newName);
+    localStorage.setItem("mtTheme", newName);
     dispatch({ type: "CHANGE_THEME", newValue: newName });
   };
 

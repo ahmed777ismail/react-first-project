@@ -8,8 +8,6 @@
 /* ==============================
 1-  OPIONS (filtered data)
 =================================*/
-.home .parent-of-btns {
-}
 
 .home .parent-of-btns button {
   background-color: #3467c2;
@@ -32,6 +30,11 @@
 .home .all-tasks {
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.home .task-link {
+  display: block;
+  height: 100%;
 }
 
 .home .all-tasks .one-task {
@@ -71,7 +74,7 @@
   color: rgb(164, 213, 255);
 
   position: absolute;
-  bottom: 7px;
+  top: 7px;
   right: 9px;
 }
 
@@ -90,6 +93,7 @@
 
 .home .add-task-btn .fa-plus {
   font-size: 14px;
+  margin: 0 5px;
 }
 
 /* ==============================
@@ -107,21 +111,4 @@
   list-style-type: circle;
   list-style-position: inside;
   margin-bottom: 6px;
-}
-
-.home .show-message {
-  background-color: whitesmoke;
-  font-size: 18px;
-  color: #1b1b1b;
-  padding: 8px 12px;
-  font-weight: normal;
-  border-radius: 5px;
-  position: fixed;
-  top: 100px;
-  transition: 1s;
-}
-
-.home .fa-circle-check {
-  color: rgb(30, 200, 200);
-  margin-left: 5px;
 }

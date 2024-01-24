@@ -12,8 +12,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signin.css";
 import Modal from "shared/Modal";
+import ReactLoading from "react-loading";
 
 const Signin = () => {
+  const [showLoading, setshowLoading] = useState(false);
   const navigate = useNavigate();
   const [email, setemail] = useState("");
   const [resetPass, setresetPass] = useState("");
@@ -22,9 +24,10 @@ const Signin = () => {
   const [firebaseError, setfirebaseError] = useState("");
   const [showSendEmail, setshowSendEmail] = useState(false);
 
-  const signInBTN = (eo) => {
+  const signInBTN = async (eo) => {
+    setshowLoading(true);
     eo.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
+    await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -38,6 +41,10 @@ const Signin = () => {
         sethasError(true);
 
         switch (errorCode) {
+          case "auth/operation-not-allowed":
+            setfirebaseError("للأسف لا  يُمكن   تسجيل الدخول فى الوقت الحالى");
+            break;
+
           case "auth/invalid-email":
             setfirebaseError("Wrong Email");
             break;
@@ -59,6 +66,8 @@ const Signin = () => {
             break;
         }
       });
+
+    setshowLoading(false);
   };
 
   // LEVEL3
@@ -137,10 +146,21 @@ const Signin = () => {
               signInBTN(eo);
             }}
           >
-            Sign in
+            {showLoading ? (
+              <div style={{ justifyContent: "center" }} className="flex">
+                <ReactLoading
+                  type={"spin"}
+                  color={"white"}
+                  height={20}
+                  width={20}
+                />
+              </div>
+            ) : (
+              "Sign in"
+            )}
           </button>
           <p className="account">
-            Don't hava an account <Link to="/signup"> Sign-up</Link>
+            Don't hava an account? <Link to="/signup"> Sign-up</Link>
           </p>
 
           <p
@@ -152,7 +172,7 @@ const Signin = () => {
             Forgot password ?
           </p>
 
-          {hasError && <h2>{firebaseError}</h2>}
+          {hasError && <h6 className="mtt">{firebaseError}</h6>}
         </form>
       </main>
       <Footer />
